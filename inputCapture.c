@@ -10,6 +10,7 @@
 #define  PPSUnlock                   __builtin_write_OSCCONL(OSCCON & 0xbf) 
 #define  PPSLock                     __builtin_write_OSCCONL(OSCCON | 0x40)
 
+//These values are specific to my hobbyking 6ch reciever
 #define THROTTLE_MAX 9328
 #define THROTTLE_MIN 5543
 #define YAW_MAX 8510
@@ -22,6 +23,7 @@
 #define ROLL_MID 7600
 #define ROLL_MIN 6620
 
+//The desired quad angle range, 30 = 15 degrees either way
 #define XANGLE_RANGE 30.0
 #define YANGLE_RANGE 30.0
 #define ZANGLE_RANGE 5.0
@@ -84,7 +86,7 @@ void _ISR _IC1Interrupt(void)
 		TARGET_ZANGLE -= ZANGLE_RANGE*(yaw_input - YAW_MID)/(YAW_MAX - YAW_MIN);
 	}
 	ClrWdt();
-	IFS0bits.IC1IF = 0; //Clear flag
+	IFS0bits.IC1IF = 0; //Clear IC1 interrupt flag
 }	
 
 void _ISR _IC2Interrupt(void)
@@ -108,7 +110,7 @@ void _ISR _IC2Interrupt(void)
 		}	
 	}
 	ClrWdt();
-	IFS0bits.IC2IF = 0; //Clear flag
+	IFS0bits.IC2IF = 0; //Clear IC2 interrupt flag
 }	
 
 void _ISR _IC7Interrupt(void)
@@ -124,7 +126,7 @@ void _ISR _IC7Interrupt(void)
 		TARGET_XANGLE = XANGLE_RANGE*(roll_input - ROLL_MID)/(ROLL_MAX - ROLL_MIN);
 	}
 	ClrWdt();
-	IFS1bits.IC7IF = 0; //Clear flag
+	IFS1bits.IC7IF = 0; //Clear IC7 interrupt flag
 }
 
 void _ISR _IC8Interrupt(void)
@@ -140,5 +142,5 @@ void _ISR _IC8Interrupt(void)
 		TARGET_YANGLE = YANGLE_RANGE*(float)((float)(pitch_input - PITCH_MID)/(PITCH_MAX - PITCH_MIN));
 	}
 	ClrWdt();
-	IFS1bits.IC8IF = 0; //Clear flag
+	IFS1bits.IC8IF = 0; //Clear IC8 interrupt flag
 }
