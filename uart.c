@@ -79,15 +79,4 @@ void recieve_char()
 	while(U1STAbits.URXDA==0){} //Wait for new data
 	return(U1RXREG);	
 }	
-
-void transmit_int(int input) //Transmit int
-{
-	val1 = input&0x000F;
- 	val2 = ((input&0x00F0)>>4); // Assuming the compiler uses the barrel shifter. Otherwise use /0xF + 1
- 	val3 = ((input&0x0F00)>>8);
- 	val4 = ((input&0xF000)>>12);
- 	transmit_char(lookup[val4]);
- 	transmit_char(lookup[val3]);
- 	transmit_char(lookup[val2]);
- 	transmit_char(lookup[val1]);
-}	
+	

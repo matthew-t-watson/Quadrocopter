@@ -47,6 +47,7 @@ int main(void)
 	Setup_Oscillator();
 	if(RCONbits.WDTO == 1) //If watchdog reset has occured
 	{
+		//Sets all motors to their off value and hangs. The watchdog reset will only occur if the reciever recieves no data for a certain period, aka if the signal is lost. This does mean the quad will drop out of the sky, but its better than it flying away and hitting something/someone its with blades still spinning.
 		Setup_Timer3();
 		Setup_OC_Single_Shot();			
 		OC1R = 700;
