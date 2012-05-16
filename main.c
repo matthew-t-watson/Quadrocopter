@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <p33Fj128GP202.h>
-#include "D:\documents\Matthew\mplab\ControlV4\MPU6050.h"
+#include "D:\documents\Matthew\mplab\ControlV4\MPU6050.h" //For some strange reason I couldn't get this to function when relative to the root directory, so I just gave in and included the whole path
 #include "D:\documents\Matthew\mplab\ControlV4\declarations.h"
-#define FCY     40000000UL 
+#define FCY     40000000UL //Required for built in delay function
 #include <libpic30.h>  
 #include <math.h>
-#include <dsp.h>
 
 _FPOR(FPWRT_PWR128 & ALTI2C_OFF) //set power on timer to 128ms
 _FOSCSEL(FNOSC_FRCPLL) //set clock for internal OSC with PLL
@@ -14,7 +13,7 @@ _FWDT(FWDTEN_OFF & WDTPRE_PR32 & WDTPOST_PS64 & WINDIS_OFF) //Watchdog timer off
 _FICD(JTAGEN_OFF & ICS_PGD1) //disable JTAG, enable debugging on PGx1 pins
 
 
-void setup_oscillator()
+void Setup_Oscillator()
 {
 	// setup internal clock for 80MHz/40MIPS
 	// 7.37/2=3.685*43=158.455/2=79.2275
@@ -45,7 +44,7 @@ void Zero_Sensors()
 
 int main(void)
 {
-	setup_oscillator();
+	Setup_Oscillator();
 	if(RCONbits.WDTO == 1) //If watchdog reset has occured
 	{
 		Setup_Timer3();
