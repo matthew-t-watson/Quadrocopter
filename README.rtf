@@ -1,4 +1,32 @@
-This is the code for my quadrocopter Control V4 board. Please 
-treat all of it with care, as it was rather hastily thrown 
-together over about three weeks, and as such is still full of 
-bugs and errors.
+This is the code for my quadrocopter Control V4 board. Please treat all of it with care, as it was rather hastily thrown together over about three weeks, and as such is still full of bugs and errors.
+
+
+Main sections:
+
+inputcapture.c: Contains all the code for operating the input capture module, which is used to decode the PWM output from a 4ch reciever. Outputs target x y and z angles.
+
+timer1.c: The main 400Hz control loop. Most of the control occurs within the timer1 interrupt.
+
+timer2.c: Timer used to measure the length of the reciever PWM pulses.
+
+timer3.c: Timer used to control the length of the PWM output to the motor controllers.
+
+timer4.c: Legacy timer from when I ran with a variable frequency control loop. It is still used, however any reference to dt could be replaced with 1/400.
+
+uart.c Contains the code for setting up the UART module, along with simple functions for transmitting and recieving char variables. I just use the STDIO.h printf function for general debugging.
+
+filters.c Contains both a simple complementary filter, and a 2nd order complementary filter designed by RoyB, with the source linked in the comments.
+
+kalman.c Code to implement a kalman filter, with the source listed. I could never get this to function better than my complementary filter, if you can see what I am doing wrong please shout. This file isn't used in the current build.
+
+pwm.c Code to set up and operate the output compare modules in PWM mode. Since I switched to single shot mode this file hasn't been used.
+
+singleshot.c Setup and operation of the output compare modules in single shot mode. Requires the control loop to be running at the rate at which your ESCs can accept pulses.
+
+MPU6050.c Contains all the code required to operate the MPU6050.
+
+I2C.c Standard I2C control code, a complete mixture of my own work and a microchip example, although I have a feeling I may have decided to delete everything I had done and just stick with the example.
+
+motors.c Contains functions for updating the PID output and for outputting new motor speeds.
+
+main.c Simply sets up all the required timers and peripherals, then listens for UART input. This isn't required to fly, and just exists from when I was tuning the PID values on the fly. Despite being ridiculously inefficient, I found it still ran fast enough to saturate the UART buffer.
