@@ -55,7 +55,7 @@
 	
 	extern float TARGET_XANGLE;
 	extern float TARGET_YANGLE;
-	extern float TARGET_ZANGLE;
+	extern float TARGET_ZRATE;
 	
 	extern float COMPLEMENTARY_XANGLE;
 	extern float COMPLEMENTARY_XANGLEPREV;

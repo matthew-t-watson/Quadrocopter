@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "D:\documents\Matthew\mplab\ControlV4\MPU6050.h"
+#include "C:\Users\Matt\Quadrocopter\MPU6050.h"
 #define FCY     40000000UL 
 #include <libpic30.h>  
 #include <p33Fj128GP202.h>
-#include "D:\documents\Matthew\mplab\ControlV4\common.h"
+#include "C:\Users\Matt\Quadrocopter\common.h"
 #include <math.h>
 
 #define gyro_xsensitivity 66.5 //66.5 Dead on at last check

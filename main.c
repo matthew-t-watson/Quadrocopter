@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <p33Fj128GP202.h>
-#include "D:\documents\Matthew\mplab\ControlV4\MPU6050.h" //For some strange reason I couldn't get this to function when relative to the root directory, so I just gave in and included the whole path
-#include "D:\documents\Matthew\mplab\ControlV4\declarations.h"
+#include "C:\Users\Matt\Quadrocopter\MPU6050.h" //For some strange reason I couldn't get this to function when relative to the root directory, so I just gave in and included the whole path
+#include "C:\Users\Matt\Quadrocopter\declarations.h"
 #define FCY     40000000UL //Required for built in delay function
 #include <libpic30.h>  
 #include <math.h>
@@ -47,7 +47,7 @@ int main(void)
 	Setup_Oscillator();
 	if(RCONbits.WDTO == 1) //If watchdog reset has occured
 	{
-		//Sets all motors to their off value and hangs. The watchdog reset will only occur if the reciever recieves no data for a certain period, aka if the signal is lost. This does mean the quad will drop out of the sky, but its better than it flying away and hitting something/someone its with blades still spinning.
+		//Sets all motors to their stationary value and hangs. The watchdog reset will only occur if the reciever recieves no data for a certain period, aka if the signal is lost. This does mean the quad will drop out of the sky, but its better than it flying away and hitting something/someone with blades still spinning.
 		Setup_Timer3();
 		Setup_OC_Single_Shot();			
 		OC1R = 700;
@@ -87,8 +87,9 @@ int main(void)
 	Setup_Timer2(); //Input capture timer
 	Setup_Timer3(); //Output compare timer
 	Setup_Timer4(); //dt measuring timer
-	Setup_OC_Single_Shot();	
-	Setup_IC();	
+	Setup_OC_Single_Shot();
+	Calibrate_ESC_Endpoints();
+	Setup_IC();
 	RCONbits.SWDTEN = 1; //Enable watchdog timer
 	IEC0bits.T1IE = 1; //Enable timer1 interrupt
 	
@@ -97,11 +98,12 @@ int main(void)
 		if(U1STAbits.TRMT == 1)
 		{
 			//printf("\n%d,	%d,	%d,	%d",throttle_input, yaw_input, pitch_input, roll_input);
-			//printf("\n%f	%f	%f", throttle, TARGET_XANGLE, TARGET_YANGLE);
+			//printf("\n%f	%f	%f	%f", throttle, TARGET_XANGLE, TARGET_YANGLE, TARGET_ZANGLE);
+			//printf("\n%f	%f	%f	%f", OC1_output, OC2_output, OC3_output, OC4_output);
 			//printf("\n%u",TMR5);
 			//printf("\n%u",OC1R);
 			//printf("\n%f,	%f", PID_ZOUTPUT,ZERROR);
-			printf("\n%f,%f", COMPLEMENTARY_XANGLE, COMPLEMENTARY_YANGLE);
+			//printf("\n%f,%f", COMPLEMENTARY_XANGLE, COMPLEMENTARY_YANGLE);
 			//printf("\n%.1f,%.1f,%.1f", GYRO_XANGLE, ACCEL_XANGLE, COMPLEMENTARY_XANGLE);
 			//printf("\n%d,%d,%d", ACCEL_XOUT, ACCEL_YOUT, ACCEL_ZOUT);
 			//printf("\n%f,%f", ACCEL_XANGLE, ACCEL_YANGLE);

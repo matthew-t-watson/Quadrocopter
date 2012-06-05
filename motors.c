@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <p33Fj128GP202.h>
-#include "D:\documents\Matthew\mplab\ControlV4\common.h"
+#include "C:\Users\Matt\Quadrocopter\common.h"
+#define FCY     40000000UL //Required for built in delay function
+#include <libpic30.h> 
 
 
 #define MOTOR_MIN 5350.0
-#define MOTOR_MAX 8000.0 //9500
-#define MOTOR_RANGE 2650.0 //
-#define derivative_threshold 5.0
+#define MOTOR_MAX 9500.0
+#define MOTOR_RANGE 4150.0 
 
 float PREVIOUS_XERROR = 0;
 float PREVIOUS_YERROR = 0;
@@ -64,6 +65,33 @@ Motor 3 is next to 4
 	}
 }*/
 
+void Calibrate_ESC_Endpoints()
+{
+	int x = 0;
+	for (x=0; x<400; x++)
+	{
+		OC1R = MOTOR_MAX;
+		OC2R = MOTOR_MAX;
+		OC3R = MOTOR_MAX;
+		OC4R = MOTOR_MAX;
+		output_compare_fire();
+		__delay_ms(2.5);
+		LATAbits.LATA0 = !LATAbits.LATA0;
+		
+	}
+	for (x=0; x<400; x++)
+	{
+		OC1R = MOTOR_MIN;
+		OC2R = MOTOR_MIN;
+		OC3R = MOTOR_MIN;
+		OC4R = MOTOR_MIN;
+		output_compare_fire();
+		__delay_ms(2.5);
+		LATAbits.LATA0 = !LATAbits.LATA0;
+	}
+	printf("ESC endpoints calibrated");
+}	
+
 void update_motors_single_shot()
 {
 	if(throttle==0.0)
@@ -107,7 +135,7 @@ void update_PID()
 	
 	XERROR = TARGET_XANGLE - COMPLEMENTARY_XANGLE;
 	YERROR = TARGET_YANGLE - COMPLEMENTARY_YANGLE;
-	ZERROR = TARGET_ZANGLE - GYRO_ZANGLE;
+	ZERROR = TARGET_ZRATE - GYRO_ZRATE;
 
 	XDIFFERENTIAL = (XERROR - PREVIOUS_XERROR)/dt;	
 	YDIFFERENTIAL = (YERROR - PREVIOUS_YERROR)/dt;
@@ -122,7 +150,7 @@ void update_PID()
 	
 	PID_XOUTPUT = XERROR*KP + XDIFFERENTIAL*KD + XINTEGRAL*KI;
 	PID_YOUTPUT = YERROR*KP + YDIFFERENTIAL*KD + YINTEGRAL*KI;
-	PID_ZOUTPUT = ZERROR*ZKP;// + ZDIFFERENTIAL*ZKD;
+	PID_ZOUTPUT = ZERROR*ZKP; + ZDIFFERENTIAL*ZKD;
 	if(PID_ZOUTPUT > 1000){PID_ZOUTPUT = 1000;}
 	else if (PID_ZOUTPUT < -1000){PID_ZOUTPUT = -1000;}	
 }	

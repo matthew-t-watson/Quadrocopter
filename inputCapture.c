@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <p33Fj128GP202.h>
-#include "D:\documents\Matthew\mplab\ControlV4\MPU6050.h"
-#include "D:\documents\Matthew\mplab\ControlV4\common.h"
+#include "C:\Users\Matt\Quadrocopter\MPU6050.h"
+#include <common.h>
 #define FCY     40000000UL 
 #include <libpic30.h>  
 #include <math.h>
@@ -26,7 +26,7 @@
 //The desired quad angle range, 30 = 15 degrees either way
 #define XANGLE_RANGE 30.0
 #define YANGLE_RANGE 30.0
-#define ZANGLE_RANGE 5.0
+#define ZRATE_RANGE 5.0
 
 int trash = 0;
 
@@ -83,7 +83,7 @@ void _ISR _IC1Interrupt(void)
 	else if(PORTBbits.RB10 == 0)
 	{
 		yaw_input = IC1BUF;
-		TARGET_ZANGLE -= ZANGLE_RANGE*(yaw_input - YAW_MID)/(YAW_MAX - YAW_MIN);
+		TARGET_ZRATE = ZRATE_RANGE*(yaw_input - YAW_MID)/(YAW_MAX - YAW_MIN);
 	}
 	ClrWdt();
 	IFS0bits.IC1IF = 0; //Clear IC1 interrupt flag
@@ -102,7 +102,6 @@ void _ISR _IC2Interrupt(void)
 		if(throttle_input <= THROTTLE_MIN)
 		{
 			throttle = 0.0;
-			TARGET_ZANGLE = GYRO_ZANGLE;
 		}
 		else
 		{			
