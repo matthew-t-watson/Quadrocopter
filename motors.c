@@ -89,7 +89,7 @@ void Calibrate_ESC_Endpoints()
 		__delay_ms(2.5);
 		LATAbits.LATA0 = !LATAbits.LATA0;
 	}
-	printf("ESC endpoints calibrated");
+	printf("\nESC endpoints calibrated");
 }	
 
 void update_motors_single_shot()

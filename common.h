@@ -1,3 +1,6 @@
+
+	#define dt 0.0025
+
 	extern signed int ACCEL_XOUT;
 	extern signed int ACCEL_YOUT;
 	extern signed int ACCEL_ZOUT;
@@ -46,8 +49,6 @@
 	extern signed int GYRO_XOUT_OFFSET;
 	extern signed int GYRO_YOUT_OFFSET;
 	extern signed int GYRO_ZOUT_OFFSET;
-	
-	extern float dt;
 	
 	extern float PID_XOUTPUT;
 	extern float PID_YOUTPUT;

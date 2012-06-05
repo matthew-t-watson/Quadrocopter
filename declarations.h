@@ -46,7 +46,6 @@ float KALMAN_ZANGLE = 0;
 signed int GYRO_XOUT_OFFSET = 0;
 signed int GYRO_YOUT_OFFSET = 0;
 signed int GYRO_ZOUT_OFFSET = 0;
-float dt = 0;
 
 float COMPLEMENTARY_XANGLE = 0;
 float COMPLEMENTARY_YANGLE = 0;

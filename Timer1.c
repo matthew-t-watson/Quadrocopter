@@ -14,7 +14,7 @@ void Setup_Timer1()
 	IPC0bits.T1IP = 0b100; //Priority 4
 	
 	//Frequency of 400Hz
-	PR1 = 12500; //Period register
+	PR1 = 12379; //Period register
 	
 	TMR1=0;
 	T1CONbits.TON = 1; //Enable timer
@@ -28,14 +28,9 @@ void _ISR _T1Interrupt(void)
 	IEC0bits.T1IE = 0; //Disable timer1 interrupt
 	LATAbits.LATA0 = !LATAbits.LATA0;
 	
-	Get_dt();
 	Get_Gyro_Rates();
 	Get_Accel_Values();
-	Get_Accel_Angles();		
-	
-	//GYRO_XANGLE += GYRO_XRATE*dt;
-	//GYRO_YANGLE += GYRO_YRATE*dt;
-	GYRO_ZANGLE += GYRO_ZRATE*dt;		
+	Get_Accel_Angles();	
 	
 	complementary_filter();
 	//second_order_complementary_filter();

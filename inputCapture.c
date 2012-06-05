@@ -85,7 +85,7 @@ void _ISR _IC1Interrupt(void)
 		yaw_input = IC1BUF;
 		TARGET_ZRATE = ZRATE_RANGE*(yaw_input - YAW_MID)/(YAW_MAX - YAW_MIN);
 	}
-	ClrWdt();
+	Reset_Timer4();
 	IFS0bits.IC1IF = 0; //Clear IC1 interrupt flag
 }	
 
@@ -108,7 +108,7 @@ void _ISR _IC2Interrupt(void)
 			throttle = (float)(throttle_input - THROTTLE_MIN)/(THROTTLE_MAX-THROTTLE_MIN);
 		}	
 	}
-	ClrWdt();
+	Reset_Timer4();
 	IFS0bits.IC2IF = 0; //Clear IC2 interrupt flag
 }	
 
@@ -124,7 +124,7 @@ void _ISR _IC7Interrupt(void)
 		roll_input = IC7BUF;
 		TARGET_XANGLE = XANGLE_RANGE*(roll_input - ROLL_MID)/(ROLL_MAX - ROLL_MIN);
 	}
-	ClrWdt();
+	Reset_Timer4();
 	IFS1bits.IC7IF = 0; //Clear IC7 interrupt flag
 }
 
@@ -140,6 +140,6 @@ void _ISR _IC8Interrupt(void)
 		pitch_input = IC8BUF;
 		TARGET_YANGLE = YANGLE_RANGE*(float)((float)(pitch_input - PITCH_MID)/(PITCH_MAX - PITCH_MIN));
 	}
-	ClrWdt();
+	Reset_Timer4();
 	IFS1bits.IC8IF = 0; //Clear IC8 interrupt flag
 }

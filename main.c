@@ -2,14 +2,14 @@
 #include <p33Fj128GP202.h>
 #include "C:\Users\Matt\Quadrocopter\MPU6050.h" //For some strange reason I couldn't get this to function when relative to the root directory, so I just gave in and included the whole path
 #include "C:\Users\Matt\Quadrocopter\declarations.h"
-#define FCY     40000000UL //Required for built in delay function
+#define FCY     39613750UL //Required for built in delay function
 #include <libpic30.h>  
 #include <math.h>
 
 _FPOR(FPWRT_PWR128 & ALTI2C_OFF) //set power on timer to 128ms
 _FOSCSEL(FNOSC_FRCPLL) //set clock for internal OSC with PLL
 _FOSC(OSCIOFNC_OFF & POSCMD_NONE & IOL1WAY_OFF ) //no clock output, external OSC disabled, multiple peripheral pin changes
-_FWDT(FWDTEN_OFF & WDTPRE_PR32 & WDTPOST_PS64 & WINDIS_OFF) //Watchdog timer off, but can be enabled by software
+//_FWDT(FWDTEN_OFF & WDTPRE_PR32 & WDTPOST_PS64 & WINDIS_OFF) //Watchdog timer off, but can be enabled by software
 _FICD(JTAGEN_OFF & ICS_PGD1) //disable JTAG, enable debugging on PGx1 pins
 
 
@@ -45,9 +45,10 @@ void Zero_Sensors()
 int main(void)
 {
 	Setup_Oscillator();
-	if(RCONbits.WDTO == 1) //If watchdog reset has occured
+	/*if(RCONbits.WDTO == 1) //If watchdog reset has occured
 	{
-		//Sets all motors to their stationary value and hangs. The watchdog reset will only occur if the reciever recieves no data for a certain period, aka if the signal is lost. This does mean the quad will drop out of the sky, but its better than it flying away and hitting something/someone with blades still spinning.
+		RCONbits.WDTO = 0;
+		//Sets all motors to their stationary value. The watchdog reset will only occur if the reciever recieves no data for a certain period, aka if the signal is lost. This does mean the quad will drop out of the sky, but its better than it flying away and hitting something/someone with blades still spinning.
 		Setup_Timer3();
 		Setup_OC_Single_Shot();			
 		OC1R = 700;
@@ -58,12 +59,7 @@ int main(void)
 			
 		Setup_UART1();
 		printf("\nSignal Lost");
-		while(1)
-		{
-			LATAbits.LATA0 = !LATAbits.LATA0;
-			__delay_ms(100);
-		}
-	}	
+	}	*/
 	
 	AD1PCFGL = 0xffff; //digital pins
 	TRISAbits.TRISA0 = 0;	
@@ -86,11 +82,11 @@ int main(void)
 	Setup_Timer1(); //400Hz loop timer
 	Setup_Timer2(); //Input capture timer
 	Setup_Timer3(); //Output compare timer
-	Setup_Timer4(); //dt measuring timer
 	Setup_OC_Single_Shot();
 	Calibrate_ESC_Endpoints();
 	Setup_IC();
-	RCONbits.SWDTEN = 1; //Enable watchdog timer
+	Setup_Timer4(); //RX timeout timer
+	//RCONbits.SWDTEN = 1; //Enable watchdog timer
 	IEC0bits.T1IE = 1; //Enable timer1 interrupt
 	
 	while(1)
