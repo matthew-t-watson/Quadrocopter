@@ -59,7 +59,7 @@ float PID_YOUTPUT = 0;
 float PID_ZOUTPUT = 0;
 
 float KP = 35.0; //35 5/6/12
-float KI = 85.0;
+float KI = 85.0; //85 5/6/12
 float KD = 30.0; //30 5/6/12
 
 float ZKP = 40.0;

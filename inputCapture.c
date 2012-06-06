@@ -11,22 +11,23 @@
 #define  PPSLock                     __builtin_write_OSCCONL(OSCCON | 0x40)
 
 //These values are specific to my hobbyking 6ch reciever
-#define THROTTLE_MAX 9328
-#define THROTTLE_MIN 5543
-#define YAW_MAX 8510
-#define YAW_MID 7531
-#define YAW_MIN 6577
-#define PITCH_MAX 8453
-#define PITCH_MID 7562
-#define PITCH_MIN 6638
-#define ROLL_MAX 8558
-#define ROLL_MID 7600
-#define ROLL_MIN 6620
+#define THROTTLE_MAX 9306
+#define THROTTLE_MIN 5528
+#define THROTTLE_THRESHOLD 5800
+#define YAW_MAX 9616
+#define YAW_MID 7543
+#define YAW_MIN 5544
+#define PITCH_MAX 9320
+#define PITCH_MID 7524
+#define PITCH_MIN 5737
+#define ROLL_MAX 9639
+#define ROLL_MID 7697
+#define ROLL_MIN 5740
 
 //The desired quad angle range, 30 = 15 degrees either way
 #define XANGLE_RANGE 30.0
 #define YANGLE_RANGE 30.0
-#define ZRATE_RANGE 5.0
+#define ZRATE_RANGE 100.0
 
 int trash = 0;
 
@@ -99,7 +100,7 @@ void _ISR _IC2Interrupt(void)
 	else if(PORTBbits.RB11 == 0)
 	{
 		throttle_input = IC2BUF;
-		if(throttle_input <= THROTTLE_MIN)
+		if(throttle_input <= THROTTLE_THRESHOLD)
 		{
 			throttle = 0.0;
 		}

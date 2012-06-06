@@ -32,6 +32,7 @@ void _ISR _T4Interrupt(void)
 	IEC1bits.T4IE = 0; //Disable timer4 interrupt
 	
 	//Sets all motors to their stationary value. The watchdog reset will only occur if the reciever recieves no data for a certain period, aka if the signal is lost. This does mean the quad will drop out of the sky, but its better than it flying away and hitting something/someone with blades still spinning.
+	throttle = 0.0;
 	OC1R = 700;
 	OC2R = 700;
 	OC3R = 700;

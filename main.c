@@ -93,7 +93,7 @@ int main(void)
 	{
 		if(U1STAbits.TRMT == 1)
 		{
-			//printf("\n%d,	%d,	%d,	%d",throttle_input, yaw_input, pitch_input, roll_input);
+			//printf("\n%d,	%d,	%d,	%d	%f",throttle_input, yaw_input, pitch_input, roll_input, throttle);
 			//printf("\n%f	%f	%f	%f", throttle, TARGET_XANGLE, TARGET_YANGLE, TARGET_ZANGLE);
 			//printf("\n%f	%f	%f	%f", OC1_output, OC2_output, OC3_output, OC4_output);
 			//printf("\n%u",TMR5);
