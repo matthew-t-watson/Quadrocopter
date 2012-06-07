@@ -2,7 +2,7 @@
 #include <p33Fj128GP202.h>
 #include "C:\Users\Matt\Quadrocopter\common.h"
 
-#define timeConstant 1/2.0
+#define timeConstant 0.05
 float a = 0.998;
 
 float filter_xterm[3] = {0,0,0};

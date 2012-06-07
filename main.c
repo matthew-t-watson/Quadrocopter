@@ -76,14 +76,15 @@ int main(void)
 	}
 	while(error==1);
 	
-	Calibrate_Gyros();
-	Zero_Sensors();
 	
 	Setup_Timer1(); //400Hz loop timer
 	Setup_Timer2(); //Input capture timer
 	Setup_Timer3(); //Output compare timer
 	Setup_OC_Single_Shot();
 	Calibrate_ESC_Endpoints();
+	__delay_ms(5000);
+	Calibrate_Gyros();
+	Zero_Sensors();
 	Setup_IC();
 	Setup_Timer4(); //RX timeout timer
 	//RCONbits.SWDTEN = 1; //Enable watchdog timer
@@ -94,12 +95,12 @@ int main(void)
 		if(U1STAbits.TRMT == 1)
 		{
 			//printf("\n%d,	%d,	%d,	%d	%f",throttle_input, yaw_input, pitch_input, roll_input, throttle);
-			//printf("\n%f	%f	%f	%f", throttle, TARGET_XANGLE, TARGET_YANGLE, TARGET_ZANGLE);
+			//printf("\n%f	%.4f	%.4f	%.4f", throttle, TARGET_XANGLE, TARGET_YANGLE, TARGET_ZRATE);
 			//printf("\n%f	%f	%f	%f", OC1_output, OC2_output, OC3_output, OC4_output);
 			//printf("\n%u",TMR5);
 			//printf("\n%u",OC1R);
 			//printf("\n%f,	%f", PID_ZOUTPUT,ZERROR);
-			//printf("\n%f,%f", COMPLEMENTARY_XANGLE, COMPLEMENTARY_YANGLE);
+			printf("\n%f,%f", COMPLEMENTARY_XANGLE, COMPLEMENTARY_YANGLE);
 			//printf("\n%.1f,%.1f,%.1f", GYRO_XANGLE, ACCEL_XANGLE, COMPLEMENTARY_XANGLE);
 			//printf("\n%d,%d,%d", ACCEL_XOUT, ACCEL_YOUT, ACCEL_ZOUT);
 			//printf("\n%f,%f", ACCEL_XANGLE, ACCEL_YANGLE);

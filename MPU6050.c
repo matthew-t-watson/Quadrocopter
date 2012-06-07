@@ -14,10 +14,10 @@
 
 void Setup_MPU6050()
 {
-	//Sets sample rate to 8000/1+7 = 1000Hz
-	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_SMPLRT_DIV, 0x07);
-	//Disable FSync, 256Hz DLPF
-	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_CONFIG, 0x00);
+	//Sets sample rate to 1000/1+1 = 500Hz
+	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_SMPLRT_DIV, 0x01);
+	//Disable FSync, 184Hz DLPF
+	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_CONFIG, 0x03);
 	//Disable gyro self tests, scale of 500 degrees/s
 	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG, 0b00001000);
 	//Disable accel self tests, scale of +-2g, no DHPF
@@ -160,9 +160,9 @@ int MPU6050_Check_Registers()
 	unsigned char Failed = 0;
 	
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_SMPLRT_DIV, &Data, 1);
-	if(Data != 0x07) { printf("\nRegister check 1 failed, value should be 0x07, was 0x%x", Data); Failed = 1; }
+	if(Data != 0x01) { printf("\nRegister check 1 failed, value should be 0x01, was 0x%x", Data); Failed = 1; }
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &Data, 1);
-	if(Data != 0x00) { printf("\nRegister check 2 failed, value should be 0x00, was 0x%x", Data); Failed = 1; }
+	if(Data != 0x03) { printf("\nRegister check 2 failed, value should be 0x03, was 0x%x", Data); Failed = 1; }
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG, &Data, 1);
 	if(Data != 0b00001000) { printf("\nRegister check 3 failed, value should be 0b00001000, was 0x%x", Data); Failed = 1; }
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_ACCEL_CONFIG, &Data, 1);
@@ -317,6 +317,10 @@ void Get_Gyro_Rates()
 	GYRO_XRATE = (float)GYRO_XOUT/gyro_xsensitivity;
 	GYRO_YRATE = (float)GYRO_YOUT/gyro_ysensitivity;
 	GYRO_ZRATE = (float)GYRO_ZOUT/gyro_zsensitivity;
+	
+	GYRO_XANGLE += GYRO_XRATE;
+	GYRO_YANGLE += GYRO_YRATE;
+	GYRO_ZANGLE += GYRO_ZRATE;
 }	
 
 /*void Get_Gyro_Raw_Rates()
