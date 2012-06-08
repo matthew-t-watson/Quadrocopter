@@ -9,6 +9,7 @@
 #define gyro_xsensitivity 66.5 //66.5 Dead on at last check
 #define gyro_ysensitivity 66.5 //72.7 Dead on at last check
 #define gyro_zsensitivity 65.5
+#define a 0.01
 
 
 
@@ -16,12 +17,12 @@ void Setup_MPU6050()
 {
 	//Sets sample rate to 1000/1+1 = 500Hz
 	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_SMPLRT_DIV, 0x01);
-	//Disable FSync, 184Hz DLPF
+	//Disable FSync, 48Hz DLPF
 	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_CONFIG, 0x03);
 	//Disable gyro self tests, scale of 500 degrees/s
 	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG, 0b00001000);
-	//Disable accel self tests, scale of +-2g, no DHPF
-	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_ACCEL_CONFIG, 0x00);
+	//Disable accel self tests, scale of +-4g, no DHPF
+	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_ACCEL_CONFIG, 0b00001000);
 	//Freefall threshold of <|0mg|
 	LDByteWriteI2C(MPU6050_ADDRESS, MPU6050_RA_FF_THR, 0x00);
 	//Freefall duration limit of 0
@@ -166,7 +167,7 @@ int MPU6050_Check_Registers()
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG, &Data, 1);
 	if(Data != 0b00001000) { printf("\nRegister check 3 failed, value should be 0b00001000, was 0x%x", Data); Failed = 1; }
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_ACCEL_CONFIG, &Data, 1);
-	if(Data != 0x00) { printf("\nRegister check 4 failed, value should be 0x00, was 0x%x", Data); Failed = 1; }
+	if(Data != 0b00001000) { printf("\nRegister check 4 failed, value should be 0b00001000, was 0x%x", Data); Failed = 1; }
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_FF_THR, &Data, 1);
 	if(Data != 0x00) { printf("\nRegister check 5 failed, value should be 0x00, was 0x%x", Data); Failed = 1; }
 	LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_FF_DUR, &Data, 1);
@@ -253,6 +254,9 @@ int MPU6050_Check_Registers()
 void Calibrate_Gyros()
 {
 	int x = 0;
+	GYRO_XOUT_OFFSET_1000SUM = 0;
+	GYRO_YOUT_OFFSET_1000SUM = 0;
+	GYRO_ZOUT_OFFSET_1000SUM = 0;
 	for(x = 0; x<1000; x++)
 	{
 		LDByteReadI2C(MPU6050_ADDRESS, MPU6050_RA_GYRO_XOUT_H, &GYRO_XOUT_H, 1);
@@ -289,14 +293,17 @@ void Get_Accel_Values()
 	
 	ACCEL_XOUT = ((ACCEL_XOUT_H<<8)|ACCEL_XOUT_L);
 	ACCEL_YOUT = ((ACCEL_YOUT_H<<8)|ACCEL_YOUT_L);
-	ACCEL_ZOUT = ((ACCEL_ZOUT_H<<8)|ACCEL_ZOUT_L);		
+	ACCEL_ZOUT = ((ACCEL_ZOUT_H<<8)|ACCEL_ZOUT_L);
 }	
 
 //Converts the already acquired accelerometer data into 3D euler angles
 void Get_Accel_Angles()
 {
+	//ACCEL_XANGLE = 57.295*atan((float)ACCEL_YOUT/ sqrt(pow((float)ACCEL_ZOUT,2)+pow((float)ACCEL_XOUT,2)))*a + (1-a)*ACCEL_XANGLE;
+	//ACCEL_YANGLE = 57.295*atan((float)-ACCEL_XOUT/ sqrt(pow((float)ACCEL_ZOUT,2)+pow((float)ACCEL_YOUT,2)))*a + (1-a)*ACCEL_YANGLE;	
+
 	ACCEL_XANGLE = 57.295*atan((float)ACCEL_YOUT/ sqrt(pow((float)ACCEL_ZOUT,2)+pow((float)ACCEL_XOUT,2)));
-	ACCEL_YANGLE = 57.295*atan((float)-ACCEL_XOUT/ sqrt(pow((float)ACCEL_ZOUT,2)+pow((float)ACCEL_YOUT,2)));	
+	ACCEL_YANGLE = 57.295*atan((float)-ACCEL_XOUT/ sqrt(pow((float)ACCEL_ZOUT,2)+pow((float)ACCEL_YOUT,2)));
 }	
 
 //Function to read the gyroscope rate data and convert it into degrees/s
@@ -318,9 +325,9 @@ void Get_Gyro_Rates()
 	GYRO_YRATE = (float)GYRO_YOUT/gyro_ysensitivity;
 	GYRO_ZRATE = (float)GYRO_ZOUT/gyro_zsensitivity;
 	
-	GYRO_XANGLE += GYRO_XRATE;
-	GYRO_YANGLE += GYRO_YRATE;
-	GYRO_ZANGLE += GYRO_ZRATE;
+	GYRO_XANGLE += GYRO_XRATE*dt;
+	GYRO_YANGLE += GYRO_YRATE*dt;
+	GYRO_ZANGLE += GYRO_ZRATE*dt;
 }	
 
 /*void Get_Gyro_Raw_Rates()

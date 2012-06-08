@@ -43,9 +43,9 @@ float KALMAN_XANGLE = 0;
 float KALMAN_YANGLE = 0;
 float KALMAN_ZANGLE = 0;
 
-signed int GYRO_XOUT_OFFSET = 0;
-signed int GYRO_YOUT_OFFSET = 0;
-signed int GYRO_ZOUT_OFFSET = 0;
+signed int GYRO_XOUT_OFFSET = -84;
+signed int GYRO_YOUT_OFFSET = -12;
+signed int GYRO_ZOUT_OFFSET = -3;
 
 float COMPLEMENTARY_XANGLE = 0;
 float COMPLEMENTARY_YANGLE = 0;
@@ -58,12 +58,12 @@ float PID_XOUTPUT = 0;
 float PID_YOUTPUT = 0;
 float PID_ZOUTPUT = 0;
 
-float KP = 20.0; //35 5/6/12
-float KI = 85.0; //85 5/6/12
-float KD = 15.0; //30 5/6/12
+float KP = 0.0; //35 5/6/12
+float KI = 0.0; //85 5/6/12
+float KD = 0.0; //30 5/6/12
 
-float ZKP = 40.0;
-float ZKD = 25.0;
+float ZKP = 0.0; //40 8/6/12
+float ZKD = 0.0; //25 8/6/12
 
 float XERROR = 0;
 float YERROR = 0;

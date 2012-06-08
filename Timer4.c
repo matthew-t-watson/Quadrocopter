@@ -38,7 +38,7 @@ void _ISR _T4Interrupt(void)
 	OC3R = 700;
 	OC4R = 700;
 	output_compare_fire();
-	printf("\nSignal Lost");
+	//printf("\nSignal Lost");
 	
 	TMR4=0;
 	IEC1bits.T4IE = 1; //Enable timer1 interrupt

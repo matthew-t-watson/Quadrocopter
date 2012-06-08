@@ -2,8 +2,8 @@
 #include <p33Fj128GP202.h>
 #include "C:\Users\Matt\Quadrocopter\common.h"
 
-#define timeConstant 0.05
-float a = 0.998;
+#define timeConstant 0.1
+float a = 0.9994;
 
 float filter_xterm[3] = {0,0,0};
 float filter_yterm[3] = {0,0,0};
@@ -26,4 +26,4 @@ void second_order_complementary_filter() //http://code.google.com/p/aeroquad/sou
   	filter_yterm[1] = filter_yterm[2] + (ACCEL_YANGLE - COMPLEMENTARY_YANGLE) * 2 * timeConstant + GYRO_YRATE;
   	COMPLEMENTARY_XANGLE = (dt * filter_xterm[1]) + COMPLEMENTARY_XANGLE;
   	COMPLEMENTARY_YANGLE = (dt * filter_yterm[1]) + COMPLEMENTARY_YANGLE;
-}	
+}

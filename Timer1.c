@@ -32,8 +32,8 @@ void _ISR _T1Interrupt(void)
 	Get_Accel_Values();
 	Get_Accel_Angles();	
 	
-	complementary_filter();
-	//second_order_complementary_filter();
+	//complementary_filter();
+	second_order_complementary_filter();
 	
 	update_PID();
 	update_motors_single_shot();

@@ -37,7 +37,7 @@ void Setup_UART1()
 	// U2BRG = (Fcy/(16*BaudRate))-1
 	// U2BRG = ((79.2275E6/2)/(16*57600))-1
 	// U2BRG = 41.98367
-	U1BRG = 42; // 42 80Mhz osc, 57600 Baud
+	U1BRG = 43; // 43 80Mhz osc, 57600 Baud
 
 	// Load all values in for U1STA SFR
 	U1STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)

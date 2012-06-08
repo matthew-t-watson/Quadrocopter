@@ -100,26 +100,18 @@ int main(void)
 			//printf("\n%u",TMR5);
 			//printf("\n%u",OC1R);
 			//printf("\n%f,	%f", PID_ZOUTPUT,ZERROR);
-			printf("\n%f,%f", COMPLEMENTARY_XANGLE, COMPLEMENTARY_YANGLE);
-			//printf("\n%.1f,%.1f,%.1f", GYRO_XANGLE, ACCEL_XANGLE, COMPLEMENTARY_XANGLE);
+			printf("\nDATA %.3f", COMPLEMENTARY_XANGLE);
+			//printf("\nDATA %.3f,%.3f", COMPLEMENTARY_XANGLE, TARGET_XANGLE);
+			//printf("\nDATA %.3f,%.3f,%.3f", GYRO_XANGLE, ACCEL_XANGLE, COMPLEMENTARY_XANGLE);
 			//printf("\n%d,%d,%d", ACCEL_XOUT, ACCEL_YOUT, ACCEL_ZOUT);
 			//printf("\n%f,%f", ACCEL_XANGLE, ACCEL_YANGLE);
 		}
 		
-		if(U1STAbits.URXDA==1){
+		if(U1STAbits.URXDA==1)
+			{
 			char input = U1RXREG;
 			
-			if(input == '+')
-			{
-				throttle = throttle + 0.01;
-				printf(",%f", throttle);
-			}
-			else if (input == '-' && throttle>0)
-			{
-				throttle = throttle - 0.01;
-				printf(",%f", throttle);
-			}
-			else if (input == '*')
+			if (input == '*')
 			{				
 				IEC0bits.T1IE = 0; //Disable timer1 interrupt
 				IEC0bits.IC1IE = 0; //Disable interrupt
@@ -128,56 +120,36 @@ int main(void)
 				IEC1bits.IC8IE = 0; //Disable interrupt
 				while(1){}
 			}
-			else if (input == 'z')
-			{
-				ZKP = ZKP + 1;
-				printf(",%f",ZKP);
-			}
-			else if (input == 'x')
-			{
-				ZKP = ZKP - 1;
-				printf(",%f",ZKP);
-			}
-			else if (input == 'r')
-			{
-				__asm__ volatile ("reset"); 
-			}
-			else if (input == 'c')
-			{
-				ZKD = ZKD + 1;
-				printf(",%f",ZKD);
-			}
-			else if (input == 'v')
-			{
-				ZKD = ZKD - 1;
-				printf(",%f",ZKD);
-			}
-			
-			else if (input == 'b')
-			{
-				KI = KI + 1;
-				printf(",%f",KI);
-			}
-			else if (input == 'n')
-			{
-				KI = KI - 1;
-				printf(",%f",KI);
-			}
-			
 			else if (input == 'q')
 			{
-				TARGET_XANGLE = -20.0;
-				printf(",%f",TARGET_XANGLE);
+				KP = KP + 1;
+				printf("\nKP=%.1f",KP);
 			}
 			else if (input == 'w')
 			{
-				TARGET_XANGLE = 0.0;
-				printf(",%f",TARGET_XANGLE);
+				KP = KP - 1;
+				printf("\nKP=%.1f",KP);
 			}
-			else if (input == 'e')
+			else if (input == 'a')
 			{
-				TARGET_XANGLE = 20.0;
-				printf(",%f",TARGET_XANGLE);
+				KD = KD + 1;
+				printf("\nKD=%.1f",KD);
+			}
+			else if (input == 's')
+			{
+				KD = KD - 1;
+				printf("\nKD=%.1f",KD);
+			}
+			
+			else if (input == 'z')
+			{
+				KI = KI + 1;
+				printf("\nKI=%.1f",KI);
+			}
+			else if (input == 'x')
+			{
+				KI = KI - 1;
+				printf("\nKI=%.1f",KI);
 			}
 		}		
 	}
