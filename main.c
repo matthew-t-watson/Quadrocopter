@@ -62,8 +62,8 @@ int main(void)
 	}	*/
 	
 	AD1PCFGL = 0xffff; //digital pins
-	TRISAbits.TRISA0 = 0;	
-	LATAbits.LATA0 = 1; // Set LED high
+	TRISAbits.TRISA1 = 0;	
+	LATAbits.LATA1 = 1; // Set LED high
 	
 	int error = 1;
 	Setup_UART1();
@@ -132,12 +132,12 @@ int main(void)
 			}
 			else if (input == 'a')
 			{
-				KD = KD + 1;
+				KD = KD + 0.5;
 				printf("\nKD=%.1f",KD);
 			}
 			else if (input == 's')
 			{
-				KD = KD - 1;
+				KD = KD - 0.5;
 				printf("\nKD=%.1f",KD);
 			}
 			
