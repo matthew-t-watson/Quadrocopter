@@ -62,6 +62,7 @@ int main(void)
 	}	*/
 	
 	AD1PCFGL = 0xffff; //digital pins
+	TRISAbits.TRISA0 = 0;	
 	TRISAbits.TRISA1 = 0;	
 	LATAbits.LATA1 = 1; // Set LED high
 	
@@ -100,7 +101,7 @@ int main(void)
 			//printf("\n%u",TMR5);
 			//printf("\n%u",OC1R);
 			//printf("\n%f,	%f", PID_ZOUTPUT,ZERROR);
-			printf("\nDATA %.3f", COMPLEMENTARY_XANGLE);
+			//printf("\nDATA %.3f", COMPLEMENTARY_XANGLE);
 			//printf("\nDATA %.3f,%.3f", COMPLEMENTARY_XANGLE, TARGET_XANGLE);
 			//printf("\nDATA %.3f,%.3f,%.3f", GYRO_XANGLE, ACCEL_XANGLE, COMPLEMENTARY_XANGLE);
 			//printf("\n%d,%d,%d", ACCEL_XOUT, ACCEL_YOUT, ACCEL_ZOUT);
@@ -143,12 +144,12 @@ int main(void)
 			
 			else if (input == 'z')
 			{
-				KI = KI + 1;
+				KI = KI + 0.1;
 				printf("\nKI=%.1f",KI);
 			}
 			else if (input == 'x')
 			{
-				KI = KI - 1;
+				KI = KI - 0.1;
 				printf("\nKI=%.1f",KI);
 			}
 		}		

@@ -9,7 +9,7 @@ void Setup_Timer3()
 	T3CONbits.TON = 0; //Disable timer
 	T3CONbits.TSIDL = 0; //Continue operation in idle mode
 	T3CONbits.TGATE = 0; //Timer gate accumulation disabled
-	T3CONbits.TCKPS = 0b01; //Timer prescale 1:1, 1:8, 1:63, 1:256
+	T3CONbits.TCKPS = 0b01; //Timer prescale 1:1, 1:8, 1:64, 1:256
 	//T3CONbits.T32 = 0; //32 bit timer disabled
 	T3CONbits.TCS = 0; //Internal clock source
 	
