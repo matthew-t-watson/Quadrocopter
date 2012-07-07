@@ -58,9 +58,9 @@ float PID_XOUTPUT = 0;
 float PID_YOUTPUT = 0;
 float PID_ZOUTPUT = 0;
 
-float KP = 25.0; //35 5/6/12
+float KP = 26.0; //25 27/6/12
 float KI = 200.0; //85 5/6/12
-float KD = 7; //30 5/6/12
+float KD = 7; //7 27/6/12
 
 float ZKP = 40.0; //40 8/6/12
 float ZKD = 25.0; //25 8/6/12

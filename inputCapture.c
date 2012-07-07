@@ -25,8 +25,8 @@
 #define ROLL_MIN 5740
 
 //The desired quad angle range, 30 = 15 degrees either way
-#define XANGLE_RANGE 30.0
-#define YANGLE_RANGE 30.0
+#define XANGLE_RANGE 40.0
+#define YANGLE_RANGE 40.0
 #define ZRATE_RANGE 100.0
 
 int trash = 0;
